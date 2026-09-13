@@ -64,6 +64,15 @@ describe('isCorsDisabled', () => {
 })
 
 describe('addCorsHeaders', () => {
+  it('preserves network error responses when CORS is enabled', () => {
+    const response = Response.error()
+    const result = addCorsHeaders(response)
+
+    expect(result).toBe(response)
+    expect(result.type).toBe('error')
+    expect(result.status).toBe(0)
+  })
+
   it('adds default CORS headers to response', () => {
     const response = new Response('ok')
     const result = addCorsHeaders(response, true)
