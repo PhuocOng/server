@@ -38,5 +38,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Network error regression
         run: >-
-          pnpm exec vitest run --project unit src/cors.test.ts
-          -t "preserves network error responses"
+          pnpm exec vitest run --project unit
+          src/cors.test.ts src/with-supabase.test.ts
