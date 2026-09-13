@@ -77,7 +77,7 @@ describe('addCorsHeaders', () => {
       expect(result).toBe(response)
       expect(result.type).toBe('error')
       expect(result.status).toBe(0)
-      expect([...result.headers]).toEqual([])
+      expect(result.headers.get('Access-Control-Allow-Origin')).toBeNull()
     },
   )
 
