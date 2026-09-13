@@ -26,8 +26,14 @@ jobs:
       - run: pnpm build
 
   regression:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
+      - name: Preserve repository line endings
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
@@ -40,3 +46,11 @@ jobs:
         run: >-
           pnpm exec vitest run --project unit
           src/cors.test.ts src/with-supabase.test.ts
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm build
+      - name: Check contribution formatting
+        run: >-
+          pnpm exec prettier --check
+          src/cors.ts src/cors.test.ts src/with-supabase.test.ts
